@@ -22,3 +22,4 @@ def get(request,id):
     obj=Product.objects.get(id=id)
     s=ProductSerializer(obj)
     return Response(s.data)
+
