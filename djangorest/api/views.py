@@ -3,6 +3,20 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import *
 from main.models import *
+from rest_framework.views import APIView
+# from rest_framework.generics import 
+from rest_framework.generics import ListAPIView
+
+
+class CustomListView(ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        response.data={"data":response.data,"list":"object"}
+        return response
+
 
 @api_view(['GET'])
 def show(request):
@@ -23,3 +37,15 @@ def get(request,id):
     s=ProductSerializer(obj)
     return Response(s.data)
 
+
+class Display(APIView):
+  
+    def get(self,*request):
+        print(request[1])
+        if len(request)==1:
+            return Response("Hello")
+        
+        obj=Product.objects.get(pk=id)
+        s=ProductSerializer(obj)
+        return Response(s.data)
+    
